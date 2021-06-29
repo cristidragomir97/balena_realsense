@@ -1,0 +1,46 @@
+version: '2.1'
+
+services:
+  roscore:
+    build: ./roscore
+    restart: always
+    network_mode: host
+    environment: 
+        - ROS_IP=b70fc0b.local
+        - ROS_HOSTNAME=b70fc0b.local
+        - ROS_MASTER_URI=http://b70fc0b.local:11311
+        - UDEV=1
+    privileged: true
+    links: 
+        - camera
+        - coral
+  camera:
+    depends_on: 
+      - roscore 
+    build: ./camera
+    restart: always
+    network_mode: host
+    environment: 
+        - ROS_IP=b70fc0b.local
+        - ROS_HOSTNAME=b70fc0b.local
+        - ROS_MASTER_URI=http://b70fc0b.local:11311
+        - UDEV=1
+    privileged: true
+    devices:
+      - "/dev:/dev"
+  coral:
+    depends_on: 
+      - roscore 
+    build: ./coral
+    restart: always
+    network_mode: host
+    environment: 
+        - ROS_IP=b70fc0b.local
+        - ROS_HOSTNAME=b70fc0b.local
+        - ROS_MASTER_URI=http://b70fc0b.local:11311
+        - UDEV=1
+    privileged: true
+    devices:
+      - "/dev:/dev"
+
+
